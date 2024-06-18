@@ -1,12 +1,12 @@
 
 import dotenv from 'dotenv'
-import { modelDeleteVendor, modelGetIdVendor, modelInsertVendor, modelUpdateVendor } from '../db/models/vendor.models.js';
+import { modelDeleteVendor, modelGetIdVendor, modelGetVendor, modelInsertVendor, modelUpdateVendor } from '../db/models/vendor.models.js';
 
 dotenv.config()
 
 const GetVendorAll = async(req,res,next)=>{
     try {
-        const result = await modelGetIdVendor();
+        const result = await modelGetVendor();
         if(result.error){
             return res.status(500).json({msg : `Terjadi kesalahan di server`})
         } else if(result === "Data Vendor tidak ditemukan") return res.status(400).json({msg : `Data Vendor tidak ditemukan`})

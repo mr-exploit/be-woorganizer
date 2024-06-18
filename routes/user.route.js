@@ -5,7 +5,7 @@ import upload from '../middleware/multerconfig.middleware.js'
 
 const router = express.Router()
 
-router.get('/api/user', authenticateToken, adminRole, GetUser)
+router.get('/api/user', authenticateToken, userRole, GetUser)
 router.put('/api/user/profile/:id', authenticateToken, userRole, upload.single('image'), UpdateProfile)
 
 router.put('/api/user/reset-password/:id', authenticateToken, userRole, userResetPassword)

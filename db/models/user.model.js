@@ -38,6 +38,7 @@ const modelUserId = async(userId)=>{
     try {
         const result = await query(`SELECT id, Image FROM user  
                                 WHERE id=?`, userId);
+        console.log("check result", result)
         if(result.length===0) return "User tidak ditemukan" 
 
         return result

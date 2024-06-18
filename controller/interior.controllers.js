@@ -111,7 +111,7 @@ const UpdateInterior = async(req,res,next)=>{
             await fs.promises.unlink(req.file.path);
         }
 
-        const result = await modelUpdateInterior(jenis, vendor, no_telp, harga, konsep, getId[0].img, getId[0].id);
+        const result = await modelUpdateInterior(jenis, vendor, no_telp, harga, konsep, getId[0].image, getId[0].id);
         
         if(result === "Gagal menambahkan data"){
             return res.status(400).json({msg : `terjadi kesalahan `})
@@ -125,7 +125,7 @@ const UpdateInterior = async(req,res,next)=>{
             no_telp : no_telp, 
             harga : harga, 
             konsep : konsep, 
-            imginterior : getId[0].img
+            imginterior : getId[0].image
         };
         return res.status(200).json({msg:"Interior berhasil di Update" , data : data});
 
@@ -147,7 +147,7 @@ const DeleteInterior = async(req,res,next)=>{
             return res.status(500).json({ msg: `Terjadi kesalahan di server` });
         }
 
-        const filePath = getId[0].img;
+        const filePath = getId[0].image;
         const resolvedPath = path.resolve(filePath);
         console.log("Resolved file path:", resolvedPath);
 

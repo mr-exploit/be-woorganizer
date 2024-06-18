@@ -19,7 +19,7 @@ const GetUser = async(req,res,next)=>{
     try {
         const id = req.query.id;
         const result = await modelUserProfile(id);
-        console.log(result)
+  
         if(result.error){
             return res.status(500).json({msg : `Terjadi kesalahan di server`})
         }else if(result === "User tidak ditemukan"){  
@@ -68,7 +68,7 @@ const userResetPassword = async(req,res,next)=>{
     const { sub: iduser } = req.user;
     const idparams = req.params;
     const userId = await modelUserId(idparams);
-
+    console.log("userId", userId);
     if(userId === "User tidak ditemukan"){
         return res.status(400).json({msg : `User tidak ditemukan`})
     } else if (userId.error){

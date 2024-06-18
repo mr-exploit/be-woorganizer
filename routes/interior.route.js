@@ -8,7 +8,7 @@ const router = express.Router()
 router.get('/api/interior', authenticateToken, adminRole,  GetInteriorAll)
 router.get('/api/interior/:id',authenticateToken, adminRole, GetInteriorId)
 router.post('/api/interior',authenticateToken, adminRole, upload.single('image'), insertInterior)
-router.put('/api/interior/:id', authenticateToken, adminRole, UpdateInterior)
+router.put('/api/interior/:id', authenticateToken, adminRole, upload.single('image'), UpdateInterior)
 router.delete('/api/interior/:id', authenticateToken, adminRole, DeleteInterior)
 
 export default router
