@@ -97,8 +97,10 @@ const checkUser = async(req,res,next)=>{
     try {
         const userId = req.params.id;
         const user = await modelUser(userId);
-        if (user.length===0){
+        if (user === "User not found"){
             return res.status(400).json({error:"User not found"})
+        }else if(user.error){
+            return res.status(500).json({msg : `Terjadi kesalahan di server`})
         }
        
         return res.status(200).json(user);
