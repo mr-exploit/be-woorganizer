@@ -4,8 +4,8 @@ import { DeleteRincianAnggaran, GetRincian, GetRincianId, insertRincianAnggaran,
 
 const router = express.Router()
 
-router.get('/api/rincian',authenticateToken, adminRole, GetRincian)
-router.get('/api/rincian/:id',authenticateToken, adminRole, GetRincianId)
+router.get('/api/rincian',authenticateToken,  GetRincian)
+router.get('/api/rincian/:id',authenticateToken, GetRincianId)
 router.get('/api/totalrincian',authenticateToken, adminRole, TotalRincianAnggaran)
 router.post('/api/rincian',authenticateToken, adminRole, insertRincianAnggaran)
 router.put('/api/rincian/:id', authenticateToken, adminRole, UpdateRincianAnggaran)

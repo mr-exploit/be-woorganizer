@@ -19,7 +19,7 @@ const GetUser = async(req,res,next)=>{
     try {
         const id = req.query.id;
         const result = await modelUserProfile(id);
-  
+        console.log("check result", result)
         if(result.error){
             return res.status(500).json({msg : `Terjadi kesalahan di server`})
         }else if(result === "User tidak ditemukan"){  
@@ -33,6 +33,26 @@ const GetUser = async(req,res,next)=>{
         return res.status(500).json({msg:"terjadi kesalahan pada server"})
     }
 }
+
+const GetUserId = async(req,res,next)=>{
+    try {
+        const {id} = req.params;
+        const result = await modelUserId(id);
+  
+        if(result.error){
+            return res.status(500).json({msg : `Terjadi kesalahan di server`})
+        }else if(result === "User tidak ditemukan"){  
+            return res.status(400).json({msg : `User tidak ditemukan`})
+        }
+        console.log("result", result)
+        return res.status(200).json({ data : result});
+
+    } catch (error) {
+        console.log("check error", error)
+        return res.status(500).json({msg:"terjadi kesalahan pada server"})
+    }
+}
+
 
 const updateUserRole = async(req,res,next)=>{
     try {
@@ -108,10 +128,11 @@ const UpdateProfile = async(req,res,next)=>{
         const { nama, no_hp, kode_pos } = req.body;
         const id = req.params;
         const {sub : iduser} = req.user;
+        console.log("check" , id)
          // Get the file path from Multer
          const imagePath = req.file ? req.file.path : null;
 
-        const userId = await modelUserId(id);
+        const userId = await modelUserId(iduser);
         if(userId === "User tidak ditemukan"){
             return res.status(400).json({msg : `User tidak ditemukan`})
         } else if (userId.error){
@@ -122,7 +143,7 @@ const UpdateProfile = async(req,res,next)=>{
         }
         const result = await modelUpdateProfile(userId[0].id, nama, no_hp, kode_pos, imagePath);
 
-        var dataresult = {
+        const dataresult = {
             nama : nama,
             no_hp : no_hp,
             kode_pos : kode_pos,
@@ -175,4 +196,11 @@ const deleteAkun = async (req, res, next) => {
     }
 };
 
-export { GetUser,userResetPassword, UpdateProfile, deleteAkun, updateUserRole}
+export { 
+    GetUser, 
+    GetUserId,
+    userResetPassword,
+    UpdateProfile, 
+    deleteAkun, 
+    updateUserRole
+}

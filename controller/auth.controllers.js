@@ -7,16 +7,16 @@ import { modelRegister, modelRegisterCheck, modelUser } from "../db/models/auth.
 dotenv.config()
 
 const register = async(req,res)=>{
-    const {email, username, password, confPassword} = req.body
+    const {email, username, password } = req.body
     const roleid = "3";
 
-    if(username===""||username===undefined||password===""||password===undefined||confPassword===""||confPassword===undefined){
-        return res.status(400).json({error:"Field must not be empty"})
-    }
+    // if(username===""||username===undefined||password===""||password===undefined||confPassword===""||confPassword===undefined){
+    //     return res.status(400).json({error:"Field must not be empty"})
+    // }
 
-    if (password!==confPassword){
-        return res.status(400).json({error:"Password not match"})
-    }
+    // if (password!==confPassword){
+    //     return res.status(400).json({error:"Password not match"})
+    // 
 
     try {
         const salt = await bcrypt.genSalt(12)

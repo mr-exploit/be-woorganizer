@@ -149,7 +149,6 @@ const DeleteInterior = async(req,res,next)=>{
 
         const filePath = getId[0].image;
         const resolvedPath = path.resolve(filePath);
-        console.log("Resolved file path:", resolvedPath);
 
         // Delete the entry from the database
         const result = await modelDeleteInterior(id);

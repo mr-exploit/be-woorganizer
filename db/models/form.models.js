@@ -12,6 +12,20 @@ const modelFormGet = async()=>{
     }
 }
 
+const modelFormGetIdUser = async(id)=>{
+    try {
+        const result = await query(`SELECT * FROM form WHERE id_user= ?`, [id]);
+
+        if(result.length === 0){
+            return "Data Form tidak ditemukan"
+        }
+        return result
+    } catch (error) {
+        console.log("Terjadi kesalahan di db:", error)
+        return {error : `Error Message: ${error}`}
+    }
+}
+
 const modelFormGetId = async(id)=>{
     try {
         const result = await query(`SELECT * FROM form WHERE id= ?`, [id]);
@@ -67,4 +81,10 @@ const modelFormDelete = async(id)=>{
     }
 }
 
-export {modelFormGet,modelFormGetId, modelFormPost, modelFormUpdate, modelFormDelete}
+export {modelFormGet,
+        modelFormGetIdUser,
+        modelFormGetId, 
+        modelFormPost, 
+        modelFormUpdate, 
+        modelFormDelete
+    }

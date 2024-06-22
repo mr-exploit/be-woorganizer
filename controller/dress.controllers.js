@@ -63,7 +63,7 @@ const insertDress = async(req,res,next)=>{
         }
 
         const result = await modelInsertDress(nama_dress, sex, imagePath);
-        console.log("check result", result)
+        
         if (result === "Gagal menambahkan data") {
             return res.status(400).json({ msg: `Terjadi kesalahan: ${result}` });
         }

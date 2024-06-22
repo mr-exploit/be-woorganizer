@@ -61,9 +61,9 @@ const insertRincianAnggaran = async(req,res,next)=>{
         if(result.error){
             return res.status(500).json({msg : `Terjadi kesalahan di server`})
         }
-        
+        const id = result.insertId;
         const data = {
-            Uraian, Vol, Harga_Awal, Jumlah, Keterangan
+            id, Uraian, Vol, Harga_Awal, Jumlah, Keterangan
         }
         return res.status(200).json({msg:"Rincian Anggaran berhasil Ditambahkan" , data : data});
 
@@ -86,9 +86,9 @@ const UpdateRincianAnggaran = async(req,res,next)=>{
         if(result === "Gagal menambahkan data") return res.status(400).json({msg : `terjadi kesalahan : ${result}`})
         
         if(result.error) return res.status(500).json({msg : `Terjadi kesalahan di server`})
-        
+  
         const data = {
-            Uraian, Vol, Harga_Awal, Jumlah, Keterangan
+            id : id, Uraian, Vol, Harga_Awal, Jumlah, Keterangan
         }
         return res.status(200).json({msg:"Rincian Anggaran berhasil di Update" , data : data});
 

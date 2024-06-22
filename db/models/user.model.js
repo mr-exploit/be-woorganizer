@@ -7,10 +7,10 @@ dotenv.config()
 
 const modelUserProfile = async(userId)=>{
     try {
-        const result = await query(`SELECT u.id, u.Email, u.Nama, u.NO_HP, 
-                                u.Kode_Pos, u.Image FROM user u
+        const result = await query(`SELECT u.id, u.Email, u.Nama, u.No_HP, 
+                                u.Kode_Pos, u.Image, ur.role as role FROM user u
                                 INNER JOIN user_role ur ON u.Role_Id = ur.id 
-                                WHERE u.id=?`, userId);
+                                WHERE u.id=? `, userId);
                                 
         if(result.length===0) return "User tidak ditemukan" 
 

@@ -1,12 +1,32 @@
 
 import dotenv from 'dotenv'
-import { modelFormDelete, modelFormGet, modelFormGetId, modelFormPost, modelFormUpdate } from '../db/models/form.models.js';
+import { modelFormDelete, modelFormGet, modelFormGetId, modelFormGetIdUser, modelFormPost, modelFormUpdate } from '../db/models/form.models.js';
 import { modelUser } from '../db/models/auth.models.js';
 dotenv.config()
 
 const GetForm = async(req,res,next)=>{
     try {
         const result = await modelFormGet();
+        if(result.error){
+            return res.status(500).json({msg : `Terjadi kesalahan di server`})
+        }
+        return res.status(200).json({ data : result});
+       
+    } catch (error) {
+        console.log("check error", error)
+        return res.status(500).json({msg:"terjadi kesalahan pada server"})
+    }
+}
+
+const GetFormIdUser = async(req,res,next)=>{
+    try {
+        const {id} = req.params;
+        const result = await modelFormGetIdUser(id);
+        console.log(result)
+        
+        if(result === "Data tidak ditemukan"){
+            return res.status(400).json({msg : `Data Form tidak ditemukan`})
+        }
         if(result.error){
             return res.status(500).json({msg : `Terjadi kesalahan di server`})
         }
@@ -48,8 +68,9 @@ const PostForm = async(req,res,next)=>{
         if(result.error){
             return res.status(500).json({msg : `Terjadi kesalahan di server`})
         }
-        
+        const resultId = result.insertId;
         const data = {
+            id : resultId,
             nama_depan: nama_depan,
             nama_belakang: nama_belakang,
             email: email,
@@ -118,4 +139,4 @@ const DeleteForm = async(req,res,next)=>{
     }
 }
 
-export {GetForm,GetFormId, PostForm, UpdateForm, DeleteForm}
+export {GetForm,GetFormId, GetFormIdUser, PostForm, UpdateForm, DeleteForm}
