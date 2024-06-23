@@ -12,6 +12,20 @@ const modelFormGet = async()=>{
     }
 }
 
+const modelFormGetUserEmail = async()=>{
+    try {
+        const result = await query(`SELECT DISTINCT(u.email), u.id, u.email,u.nama, u.alamat, u.no_hp  FROM form f
+                INNER JOIN USER u ON f.id_user = u.id`);
+        if(result.length === 0){
+            return "Data Form tidak ditemukan"
+        }
+        return result
+    } catch (error) {
+        console.log("Terjadi kesalahan di db:", error)
+        return {error : `Error Message: ${error}`}
+    }
+}
+
 const modelFormGetIdUser = async(id)=>{
     try {
         const result = await query(`SELECT * FROM form WHERE id_user= ?`, [id]);
@@ -82,6 +96,7 @@ const modelFormDelete = async(id)=>{
 }
 
 export {modelFormGet,
+        modelFormGetUserEmail,
         modelFormGetIdUser,
         modelFormGetId, 
         modelFormPost, 

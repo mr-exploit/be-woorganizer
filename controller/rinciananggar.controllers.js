@@ -1,11 +1,27 @@
 
 import dotenv from 'dotenv'
-import { modelDeleteRincianAnggaran, modelGetIdRincianAnggaran, modelGetRincianAnggaran, modelInsertRincianAnggaran, ModelTotalRincianAnggaran, modelUpdateRincianAnggaran } from '../db/models/rincianangg.model.js';
+import { modelDeleteRincianAnggaran, modelGetFormUser, modelGetIdRincianAnggaran, modelGetIdRincianForm, modelGetRincianAnggaran, modelInsertRincianAnggaran, ModelTotalRincianAnggaran, modelUpdateRincianAnggaran } from '../db/models/rincianangg.model.js';
 dotenv.config()
 
 const GetRincian = async(req,res,next)=>{
     try {
         const result = await modelGetRincianAnggaran();
+        
+        if(result.error){
+            return res.status(500).json({msg : `Terjadi kesalahan di server`})
+        } else if(result === "Data tidak ditemukan") return res.status(400).json({msg : `Data tidak ditemukan`})
+
+        return res.status(200).json({ data : result});
+       
+    } catch (error) {
+        console.log("check error", error)
+        return res.status(500).json({msg:"terjadi kesalahan pada server"})
+    }
+}
+
+const GetRincianfromUser = async(req,res,next)=>{
+    try {
+        const result = await modelGetFormUser();
         
         if(result.error){
             return res.status(500).json({msg : `Terjadi kesalahan di server`})
@@ -35,7 +51,7 @@ const TotalRincianAnggaran = async(req,res,next)=>{
 const GetRincianId = async(req,res,next)=>{
     try {
         const {id} = req.params;
-        const result = await modelGetIdRincianAnggaran(id);
+        const result = await modelGetIdRincianForm(id);
         console.log(result)
         
         if(result === "Data Anggaran tidak ditemukan"){
@@ -53,8 +69,8 @@ const GetRincianId = async(req,res,next)=>{
 
 const insertRincianAnggaran = async(req,res,next)=>{
     try {
-        const {Uraian, Vol, Harga_Awal, Jumlah, Keterangan} = req.body;
-        const result = await modelInsertRincianAnggaran(Uraian, Vol, Harga_Awal, Jumlah, Keterangan);
+        const {id_form, Uraian, Vol, Harga_Awal, Jumlah, Keterangan} = req.body;
+        const result = await modelInsertRincianAnggaran(id_form, Uraian, Vol, Harga_Awal, Jumlah, Keterangan);
         if(result === "Gagal menambahkan data"){
             return res.status(400).json({msg : `terjadi kesalahan : ${result}`})
         }
@@ -121,6 +137,7 @@ const DeleteRincianAnggaran = async(req,res,next)=>{
 export {
     GetRincian,
     GetRincianId,
+    GetRincianfromUser,
     TotalRincianAnggaran,
     insertRincianAnggaran,
     UpdateRincianAnggaran,

@@ -26,6 +26,20 @@ const modelConceptGet = async()=>{
     }
 }
 
+const ModelConceptIdForm = async()=>{
+    try {
+        const result = await query(`
+               SELECT DISTINCT(u.email), f.id, u.email, u.nama, u.alamat, u.no_hp  FROM form f
+INNER JOIN USER u ON f.id_user = u.id`);
+        if(result.length ===0){
+            return "Data tidak ditemukan"
+        }
+        return result
+    } catch (error) {
+        console.log("Terjadi kesalahan di db:", error)
+        return {error : `Error Message: ${error}`}
+    }
+}
 const ModelInsertConcept = async (id_form, id_wdid_male, id_wdid_female, inter_decor, tamu, budget, hari_h, tema, detail_acara) =>{
     try {
         const result = await query(`INSERT INTO concept (id_form, id_wedding_dress_id_male, id_wedding_dress_id_female, Interior_Decoration, Tamu, Budget, Hari_H, Tema, Detail_Acara)
@@ -43,4 +57,4 @@ const ModelInsertConcept = async (id_form, id_wdid_male, id_wdid_female, inter_d
 
 
 
-export{modelConceptGet, ModelInsertConcept}
+export{modelConceptGet, ModelConceptIdForm, ModelInsertConcept}

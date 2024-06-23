@@ -1,6 +1,6 @@
 
 import dotenv from 'dotenv'
-import { modelDeleteSchedule, modelGetIdSchedule, modelGetSchedule, modelInsertSchedule, modelUpdateSchedule } from '../db/models/schedule.models.js';
+import { modelDeleteSchedule, modelGetFormUserSchedule, modelGetIdSchedule, modelGetSchedule, modelGetScheduleIdForm, modelInsertSchedule, modelUpdateSchedule } from '../db/models/schedule.models.js';
 
 dotenv.config()
 
@@ -20,6 +20,43 @@ const GetScheduleAll = async(req,res,next)=>{
         return res.status(500).json({msg:"terjadi kesalahan pada server"})
     }
 }
+
+const GetScheduleFormUser = async(req,res,next)=>{
+    try {
+        const result = await modelGetFormUserSchedule();
+
+        if(result.error){
+            console.log("check resultScheduleall", result.error)
+            return res.status(500).json({msg : `Terjadi kesalahan di server`})
+        } else if(result === "Data tidak ditemukan") return res.status(400).json({msg : `Data Schedule tidak ditemukan`})
+
+        return res.status(200).json({ data : result});
+       
+    } catch (error) {
+        console.log("check error", error)
+        return res.status(500).json({msg:"terjadi kesalahan pada server"})
+    }
+}
+
+const GetScheduleFormId = async(req,res,next)=>{
+    try {
+        const {id} = req.params;
+        const result = await modelGetScheduleIdForm(id);
+        if(result.error){
+            console.log("check resultScheduleid", result.error)
+            return res.status(500).json({msg : `Terjadi kesalahan di server`})
+        } else if(result.length === 0){
+            return res.status(400).json({msg : `Data Schedule tidak ditemukan`})
+        } 
+        console.log("check result", result)
+        
+        return result
+    } catch (error) {
+        console.log("check error", error)
+        return res.status(500).json({msg:"terjadi kesalahan pada server"})
+    }
+}
+
 
 const GetScheduleId = async(req,res,next)=>{
     try {
@@ -116,6 +153,8 @@ const DeleteSchedule = async(req,res,next)=>{
 
 export {
     GetScheduleAll,
+    GetScheduleFormId,
+    GetScheduleFormUser,
     GetScheduleId,
     insertSchedule,
     UpdateSchedule,

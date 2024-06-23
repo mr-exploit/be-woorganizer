@@ -16,6 +16,38 @@ const modelGetSchedule = async()=>{
     }
 }
 
+const modelGetFormUserSchedule = async()=>{
+    try {
+        const result = await query(`SELECT DISTINCT(u.email), f.id  AS id_form, u.email, u.nama, u.alamat, u.no_hp FROM form f
+                INNER JOIN USER u ON f.id_user = u.id`);
+            
+        if(result.length===0) return "Data tidak ditemukan" 
+
+        return result 
+    } catch (error) {
+        console.log("Terjadi kesalahan di db:", error)
+        return {error : `Error Message: ${error}`}
+    }
+}
+
+const  modelGetScheduleIdForm = async(id)=>{
+    try {
+        const result = await query(`
+                SELECT  s.keterangan AS kegiatan, s.tanggal, s.ajukan_perubahan, u.nama AS customer FROM SCHEDULE s
+                INNER JOIN form f ON s.id_form = f.id
+                INNER JOIN USER u ON f.id_user = u.id
+                WHERE s.id_form = ? `, [id]);
+            
+        if(result.length===0) return "Data Schedule tidak ditemukan" 
+
+        return result 
+    } catch (error) {
+        console.log("Terjadi kesalahan di db:", error)
+        return {error : `Error Message: ${error}`}
+    }
+}
+
+
 const modelGetIdSchedule = async(id)=>{
     try {
         const result = await query(`SELECT * FROM schedule where id=?`, [id]);
@@ -74,6 +106,8 @@ const modelDeleteSchedule = async(id)=>{
 
 export {
     modelGetSchedule,
+    modelGetScheduleIdForm,
+    modelGetFormUserSchedule,
     modelGetIdSchedule,
     modelInsertSchedule,
     modelUpdateSchedule,
