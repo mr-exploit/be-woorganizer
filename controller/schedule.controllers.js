@@ -13,6 +13,7 @@ const GetScheduleAll = async(req,res,next)=>{
             return res.status(500).json({msg : `Terjadi kesalahan di server`})
         } else if(result === "Data tidak ditemukan") return res.status(400).json({msg : `Data Schedule tidak ditemukan`})
 
+            console.log("check result hasil", result)
         return res.status(200).json({ data : result});
        
     } catch (error) {
@@ -48,9 +49,8 @@ const GetScheduleFormId = async(req,res,next)=>{
         } else if(result.length === 0){
             return res.status(400).json({msg : `Data Schedule tidak ditemukan`})
         } 
-        console.log("check result", result)
         
-        return result
+        return res.status(200).json({ data : result});
     } catch (error) {
         console.log("check error", error)
         return res.status(500).json({msg:"terjadi kesalahan pada server"})
@@ -78,8 +78,9 @@ const GetScheduleId = async(req,res,next)=>{
 
 const insertSchedule = async(req,res,next)=>{
     try {
-        const { tanggal, keterangan, ajukan_perubahan } = req.body;
-        const result = await modelInsertSchedule(tanggal, keterangan, ajukan_perubahan);
+        const { keterangan, tanggal, id_form } = req.body;
+        const AjukanPerubahan = "tidak";
+        const result = await modelInsertSchedule(tanggal, keterangan, id_form, AjukanPerubahan);
         console.log("result", result)
         if (result === "Gagal menambahkan data") {
             return res.status(400).json({ msg: `Terjadi kesalahan: ${result}` });
@@ -93,7 +94,7 @@ const insertSchedule = async(req,res,next)=>{
         const data = {
             tanggal : tanggal, 
             keterangan : keterangan, 
-            ajukan_perubahan : ajukan_perubahan
+            id_form : id_form
         };
 
         return res.status(200).json({ msg: "Schedule berhasil ditambahkan", data: data });
@@ -106,7 +107,8 @@ const insertSchedule = async(req,res,next)=>{
 
 const UpdateSchedule = async(req,res,next)=>{
     try {
-        const { tanggal, keterangan, ajukan_perubahan } = req.body;
+        const { tanggal, keterangan,  } = req.body;
+        const ajukan_perubahan = "tidak";
         const {id} = req.params;
         const getId = await modelGetIdSchedule(id);
         if(getId === "Data Schedule tidak ditemukan") return res.status(400).json({msg : `Data Schedule tidak ditemukan`})

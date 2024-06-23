@@ -30,10 +30,10 @@ const modelGetFormUserSchedule = async()=>{
     }
 }
 
-const  modelGetScheduleIdForm = async(id)=>{
+const modelGetScheduleIdForm = async(id)=>{
     try {
         const result = await query(`
-                SELECT  s.keterangan AS kegiatan, s.tanggal, s.ajukan_perubahan, u.nama AS customer FROM SCHEDULE s
+                SELECT s.id, s.keterangan AS kegiatan, s.tanggal, s.ajukan_perubahan, u.nama AS customer FROM SCHEDULE s
                 INNER JOIN form f ON s.id_form = f.id
                 INNER JOIN USER u ON f.id_user = u.id
                 WHERE s.id_form = ? `, [id]);
@@ -61,10 +61,10 @@ const modelGetIdSchedule = async(id)=>{
     }
 }
 
-const modelInsertSchedule= async(tanggal, keterangan, ajukan_perubahan)=>{
+const modelInsertSchedule= async(tanggal, keterangan, id_form, AjukanPerubahan)=>{
     try {
         const result = await query(`
-                                INSERT INTO schedule (Tanggal, Keterangan, Ajukan_Perubahan) VALUES (?, ? , ?)`, [tanggal, keterangan, ajukan_perubahan]);
+                                INSERT INTO schedule (Tanggal, Keterangan, id_form, Ajukan_Perubahan) VALUES (?, ? , ?, ?)`, [tanggal, keterangan, id_form, AjukanPerubahan]);
             
         if(result === undefined){
             return "Gagal menambahkan data"

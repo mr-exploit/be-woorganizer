@@ -1,11 +1,9 @@
 
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
-import { modelConceptGet, ModelConceptIdForm, ModelInsertConcept } from '../db/models/concept.models.js';
+import { modelConceptGet, ModelConceptIdForm, ModelConceptIdFormUser, ModelInsertConcept } from '../db/models/concept.models.js';
 
 dotenv.config()
-
-
 
 const GetConcept = async(req,res,next)=>{
     try {
@@ -40,6 +38,22 @@ const getConceptId = async(req,res,next)=>{
     }
 }
 
+const getConceptEmailForm = async(req,res,next)=>{
+    try {
+        const {id} = req.params;
+        const result = await ModelConceptIdFormUser(id);
+        if(result === "Data tidak ditemukan"){
+            return res.status(400).json({msg : `Data tidak ditemukan`})
+        }
+        if(result.error){
+            return res.status(500).json({msg : `Terjadi kesalahan di server`})
+        }
+        return res.status(200).json({ data : result});
+
+    } catch (error) {
+        return res.status(500).json({error:"Terjadi kesalahan"})
+    }
+}
 
 const getConceptIdForm = async(req,res,next)=>{
     try {
@@ -50,6 +64,7 @@ const getConceptIdForm = async(req,res,next)=>{
         if(result.error){
             return res.status(500).json({msg : `Terjadi kesalahan di server`})
         }
+        
         return res.status(200).json({ data : result});
        
     } catch (error) {
@@ -91,4 +106,10 @@ const insertConcept = async(req,res,next)=>{
 }
 
 
-export {GetConcept, getConceptId, getConceptIdForm, insertConcept}
+export {
+    GetConcept, 
+    getConceptEmailForm,
+    getConceptId, 
+    getConceptIdForm, 
+    insertConcept
+}

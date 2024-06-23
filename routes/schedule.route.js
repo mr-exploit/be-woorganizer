@@ -4,7 +4,7 @@ import { DeleteSchedule, GetScheduleAll, GetScheduleFormId, GetScheduleFormUser,
 
 const router = express.Router()
 
-router.get('/api/schedule', authenticateToken, userRole,  GetScheduleAll)
+router.get('/api/schedule', authenticateToken, adminRole,  GetScheduleAll)
 
 router.get('/api/admin/schedule', authenticateToken, adminRole, GetScheduleFormUser)
 

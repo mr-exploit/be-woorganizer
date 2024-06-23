@@ -12,6 +12,16 @@ const modelFormGet = async()=>{
     }
 }
 
+const modeLFormGetIdOne = async(id)=>{
+    try {
+        const result = await query(`SELECT * FROM form WHERE id_user = ?`, [id]);
+        return result
+    } catch (error) {
+        console.log("Terjadi kesalahan di db:", error)
+        return {error : `Error Message: ${error}`}
+    }
+}
+
 const modelFormGetUserEmail = async()=>{
     try {
         const result = await query(`SELECT DISTINCT(u.email), u.id, u.email,u.nama, u.alamat, u.no_hp  FROM form f
@@ -98,6 +108,7 @@ const modelFormDelete = async(id)=>{
 export {modelFormGet,
         modelFormGetUserEmail,
         modelFormGetIdUser,
+        modeLFormGetIdOne,
         modelFormGetId, 
         modelFormPost, 
         modelFormUpdate, 

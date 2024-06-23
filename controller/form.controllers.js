@@ -1,6 +1,6 @@
 
 import dotenv from 'dotenv'
-import { modelFormDelete, modelFormGet, modelFormGetId, modelFormGetIdUser, modelFormGetUserEmail, modelFormPost, modelFormUpdate } from '../db/models/form.models.js';
+import { modelFormDelete, modelFormGet, modelFormGetId, modeLFormGetIdOne, modelFormGetIdUser, modelFormGetUserEmail, modelFormPost, modelFormUpdate } from '../db/models/form.models.js';
 import { modelUser } from '../db/models/auth.models.js';
 dotenv.config()
 
@@ -30,6 +30,22 @@ const getFormUseremail = async(req, res, next)=>{
         return res.status(200).json({ data : result});
        
     } catch (error) {
+        console.log("check error", error)
+        return res.status(500).json({msg:"terjadi kesalahan pada server"})
+    }
+}
+
+const GetFormIdOne = async(req,res,next)=>{
+    try {
+        const {id} = req.params;
+        const result = await modeLFormGetIdOne(id);
+        if(result.error){
+            return res.status(500).json({msg : `Terjadi kesalahan di server`})
+        }
+
+        return res.status(200).json({ data : result});
+    }
+    catch (error) {
         console.log("check error", error)
         return res.status(500).json({msg:"terjadi kesalahan pada server"})
     }
@@ -158,6 +174,7 @@ const DeleteForm = async(req,res,next)=>{
 
 export {GetForm,GetFormId,
     getFormUseremail, 
+    GetFormIdOne,
     GetFormIdUser, 
     PostForm, 
     UpdateForm, 
