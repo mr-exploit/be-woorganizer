@@ -41,6 +41,25 @@ INNER JOIN USER u ON f.id_user = u.id`);
     }
 }
 
+const ModelGetConceptIdForm = async(id)=>{
+    try {
+        const result = await query(`
+                     SELECT c.* FROM concept c
+                 INNER JOIN form f ON c.id_form = f.id
+                INNER JOIN USER u ON f.id_user = u.id
+                 WHERE u.id= ?`, [id]);
+
+        if(result.length ===0){
+            return "Data tidak ditemukan"
+        }
+        return result
+    }
+    catch (error) {
+        console.log("Terjadi kesalahan di db:", error)
+        return {error : `Error Message: ${error}`}
+    }
+}
+
 const ModelConceptIdFormUser = async(id)=>{
     try {
         const result = await query(`
@@ -74,7 +93,8 @@ const ModelInsertConcept = async (id_form, id_wdid_male, id_wdid_female, inter_d
 
 
 
-export{modelConceptGet, 
+export{modelConceptGet,
+    ModelGetConceptIdForm, 
     ModelConceptIdFormUser,
     ModelConceptIdForm, 
     ModelInsertConcept}

@@ -1,7 +1,7 @@
 
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
-import { modelConceptGet, ModelConceptIdForm, ModelConceptIdFormUser, ModelInsertConcept } from '../db/models/concept.models.js';
+import { modelConceptGet, ModelConceptIdForm, ModelConceptIdFormUser, ModelGetConceptIdForm, ModelInsertConcept } from '../db/models/concept.models.js';
 
 dotenv.config()
 
@@ -24,7 +24,8 @@ const GetConcept = async(req,res,next)=>{
 
 const getConceptId = async(req,res,next)=>{
     try {
-        const result = await ModelConceptIdForm();
+        const {id} = req.params;
+        const result = await ModelGetConceptIdForm(id);
         if(result === "Data tidak ditemukan"){
             return res.status(400).json({msg : `Data tidak ditemukan`})
         }

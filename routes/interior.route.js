@@ -5,7 +5,7 @@ import upload from '../middleware/multerconfig.middleware.js'
 
 const router = express.Router()
 
-router.get('/api/interior', authenticateToken, adminRole,  GetInteriorAll)
+router.get('/api/interior', authenticateToken, GetInteriorAll)
 router.get('/api/interior/:id',authenticateToken, adminRole, GetInteriorId)
 router.post('/api/interior',authenticateToken, adminRole, upload.single('image'), insertInterior)
 router.put('/api/interior/:id', authenticateToken, adminRole, upload.single('image'), UpdateInterior)
