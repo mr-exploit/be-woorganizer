@@ -63,7 +63,7 @@ const ModelGetConceptIdForm = async(id)=>{
 const ModelConceptIdFormUser = async(id)=>{
     try {
         const result = await query(`
-                SELECT DISTINCT(u.email), u.nama, u.image FROM concept c
+                SELECT DISTINCT(u.email), u.nama, u.image, c.* FROM concept c
                 INNER JOIN form f ON c.id_form = f.id
                 INNER JOIN USER u ON f.id_user = u.id
                 WHERE c.id_form = ?`, [id]);
