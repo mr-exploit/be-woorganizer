@@ -16,6 +16,21 @@ const modelGetAllDress = async()=>{
     }
 }
 
+
+const modelGetIdSexDress = async(id)=>{
+    try {
+        const result = await query(`SELECT * FROM master_wedding_dress where sex=?`, [id]);
+            
+        if(result.length===0) return "Data Dress tidak ditemukan" 
+
+        return result 
+    } catch (error) {
+        console.log("Terjadi kesalahan di db:", error)
+        return {error : `Error Message: ${error}`}
+    }
+}
+
+
 const modelGetIdDress = async(id)=>{
     try {
         const result = await query(`SELECT * FROM master_wedding_dress where id=?`, [id]);
@@ -75,7 +90,8 @@ const modelDeleteDress = async(id)=>{
 
 export {
     modelGetAllDress,
-    modelGetIdDress, 
+    modelGetIdDress,
+    modelGetIdSexDress, 
     modelInsertDress, 
     modelUpdateDress, 
     modelDeleteDress

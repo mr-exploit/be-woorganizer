@@ -9,9 +9,12 @@ import dressRoute from '../routes/dress.route.js'
 import scheduleRoute from '../routes/schedule.route.js'
 import interiorRoute from '../routes/interior.route.js'
 import historyRoute from '../routes/history.route.js'
+import relasivendor from '../routes/relasivendor.route.js'
+import relasiMWD from '../routes/relasimwd.route.js'
+
 const router = express()
 
-router.use(authRoute, conceptRoute, formRoute, userRoute, rincianAnggaran, vendorRoute, dressRoute, scheduleRoute, interiorRoute, historyRoute)
+router.use(authRoute, conceptRoute, formRoute, userRoute, rincianAnggaran, vendorRoute, relasivendor, dressRoute, scheduleRoute, interiorRoute, historyRoute,relasiMWD)
 
 
 export default router

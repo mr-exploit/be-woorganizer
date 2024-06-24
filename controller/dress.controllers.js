@@ -1,6 +1,6 @@
 
 import dotenv from 'dotenv'
-import { modelDeleteDress, modelGetAllDress, modelGetIdDress, modelInsertDress, modelUpdateDress } from '../db/models/dress.models.js';
+import { modelDeleteDress, modelGetAllDress, modelGetIdDress, modelGetIdSexDress, modelInsertDress, modelUpdateDress } from '../db/models/dress.models.js';
 import fs from 'fs';
 import path from 'path';
 
@@ -33,7 +33,8 @@ const GetDressAll = async(req,res,next)=>{
 const GetDressId = async(req,res,next)=>{
     try {
         const {id} = req.params;
-        const result = await modelGetIdDress(id);
+        const result = await modelGetIdSexDress(id);
+        
         if(result.error){
             console.log("check Dress Error", result.error)
             return res.status(500).json({msg : `Terjadi kesalahan di server`})

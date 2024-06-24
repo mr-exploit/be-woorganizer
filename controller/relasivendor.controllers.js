@@ -1,32 +1,18 @@
 
 import dotenv from 'dotenv'
 import { modelDeleteVendor, modelGetIdVendor, modelGetVendor, modelInsertVendor, modelUpdateVendor } from '../db/models/vendor.models.js';
+import { modelGetIdRelasi_Vendor } from '../db/models/relasivendor.models.js';
 
 dotenv.config()
 
-const GetVendorAll = async(req,res,next)=>{
-    try {
-        const result = await modelGetVendor();
-        if(result.error){
-            return res.status(500).json({msg : `Terjadi kesalahan di server`})
-        } else if(result === "Data Vendor tidak ditemukan") return res.status(400).json({msg : `Data Vendor tidak ditemukan`})
-
-        return res.status(200).json({ data : result});
-       
-    } catch (error) {
-        console.log("check error", error)
-        return res.status(500).json({msg:"terjadi kesalahan pada server"})
-    }
-}
-
-const GetVendorId = async(req,res,next)=>{
+const GetRelasi_VendorId = async(req,res,next)=>{
     try {
         const {id} = req.params;
-        const result = await modelGetIdVendor(id);
+        const result = await modelGetIdRelasi_Vendor(id);
         if(result.error){
             return res.status(500).json({msg : `Terjadi kesalahan di server`})
         } else if(result === "Data tidak ditemukan") return res.status(400).json({msg : `Data Vendor tidak ditemukan`})
-
+       
         return res.status(200).json({ data : result});
        
     } catch (error) {
@@ -35,12 +21,10 @@ const GetVendorId = async(req,res,next)=>{
     }
 }
 
-const insertVendor = async(req,res,next)=>{
+const insertRelasiVendor = async(req,res,next)=>{
     try {
-        const {nama_vendor, alamat, no_telp, harga, kategori} = req.body;
-        const result = await modelInsertVendor(nama_vendor, alamat, no_telp, harga, kategori);
-        console.log("nama_Vendor", nama_vendor )
-        console.log("alamat", result )
+        const {id_form, id_concept, id_vendor } = req.body;
+        const result = await modelInsertVendor(id_form, id_concept, id_vendor);
         if(result === "Gagal menambahkan data"){
             return res.status(400).json({msg : `terjadi kesalahan : ${result}`})
         }
@@ -48,8 +32,10 @@ const insertVendor = async(req,res,next)=>{
             return res.status(500).json({msg : `Terjadi kesalahan di server`})
         }
         
+        const resultId = result.insertId
+
         const data = {
-            id: result.insertId, nama_vendor, alamat, no_telp, harga, kategori
+            id : resultId, id_form, id_concept, id_vendor
         }
         return res.status(200).json({msg:"Vendor berhasil Ditambahkan" , data : data});
 
@@ -84,7 +70,7 @@ const UpdateVendor = async(req,res,next)=>{
     }
 }
 
-const DeleteVendor = async(req,res,next)=>{
+const DeleteRelasiVendor = async(req,res,next)=>{
     try {
         const {id} = req.params;
         const getId = await modelGetIdVendor(id);
@@ -101,9 +87,7 @@ const DeleteVendor = async(req,res,next)=>{
 }
 
 export {
-    GetVendorAll,
-    GetVendorId, 
-    insertVendor, 
-    UpdateVendor, 
-    DeleteVendor
+   GetRelasi_VendorId,
+   insertRelasiVendor,
+   DeleteRelasiVendor
 }

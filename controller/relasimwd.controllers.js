@@ -1,32 +1,18 @@
 
 import dotenv from 'dotenv'
-import { modelDeleteVendor, modelGetIdVendor, modelGetVendor, modelInsertVendor, modelUpdateVendor } from '../db/models/vendor.models.js';
+import { modelDeleteRelasi_MWD, modelGetIdRelasi_MWD, modelInsertRelasi_MWD } from '../db/models/relasimwd.models.js';
+
 
 dotenv.config()
 
-const GetVendorAll = async(req,res,next)=>{
-    try {
-        const result = await modelGetVendor();
-        if(result.error){
-            return res.status(500).json({msg : `Terjadi kesalahan di server`})
-        } else if(result === "Data Vendor tidak ditemukan") return res.status(400).json({msg : `Data Vendor tidak ditemukan`})
-
-        return res.status(200).json({ data : result});
-       
-    } catch (error) {
-        console.log("check error", error)
-        return res.status(500).json({msg:"terjadi kesalahan pada server"})
-    }
-}
-
-const GetVendorId = async(req,res,next)=>{
+const GetRelasi_MWDId = async(req,res,next)=>{
     try {
         const {id} = req.params;
-        const result = await modelGetIdVendor(id);
+        const result = await modelGetIdRelasi_MWD(id);
         if(result.error){
             return res.status(500).json({msg : `Terjadi kesalahan di server`})
         } else if(result === "Data tidak ditemukan") return res.status(400).json({msg : `Data Vendor tidak ditemukan`})
-
+       
         return res.status(200).json({ data : result});
        
     } catch (error) {
@@ -35,12 +21,10 @@ const GetVendorId = async(req,res,next)=>{
     }
 }
 
-const insertVendor = async(req,res,next)=>{
+const insertRelasiMWD = async(req,res,next)=>{
     try {
-        const {nama_vendor, alamat, no_telp, harga, kategori} = req.body;
-        const result = await modelInsertVendor(nama_vendor, alamat, no_telp, harga, kategori);
-        console.log("nama_Vendor", nama_vendor )
-        console.log("alamat", result )
+        const {id_form, id_concept, id_mwd } = req.body;
+        const result = await modelInsertRelasi_MWD(id_form, id_concept, id_mwd);
         if(result === "Gagal menambahkan data"){
             return res.status(400).json({msg : `terjadi kesalahan : ${result}`})
         }
@@ -48,8 +32,10 @@ const insertVendor = async(req,res,next)=>{
             return res.status(500).json({msg : `Terjadi kesalahan di server`})
         }
         
+        const resultId = result.insertId
+
         const data = {
-            id: result.insertId, nama_vendor, alamat, no_telp, harga, kategori
+            id : resultId, id_form, id_concept, id_mwd
         }
         return res.status(200).json({msg:"Vendor berhasil Ditambahkan" , data : data});
 
@@ -84,13 +70,13 @@ const UpdateVendor = async(req,res,next)=>{
     }
 }
 
-const DeleteVendor = async(req,res,next)=>{
+const DeleteRelasiMWD = async(req,res,next)=>{
     try {
         const {id} = req.params;
-        const getId = await modelGetIdVendor(id);
+        const getId = await modelGetIdRelasi_MWD(id); 
         if(getId === "Data Vendor tidak ditemukan") return res.status(400).json({msg : `Data Vendor tidak ditemukan`})
         
-        const result = await modelDeleteVendor(id);
+        const result = await modelDeleteRelasi_MWD(id);
         if(result.error) return res.status(500).json({msg : `Terjadi kesalahan di server`})
             
         return res.status(200).json({msg: result});
@@ -101,9 +87,8 @@ const DeleteVendor = async(req,res,next)=>{
 }
 
 export {
-    GetVendorAll,
-    GetVendorId, 
-    insertVendor, 
-    UpdateVendor, 
-    DeleteVendor
+    GetRelasi_MWDId,
+    insertRelasiMWD,
+    DeleteRelasiMWD
+
 }
