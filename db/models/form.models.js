@@ -25,7 +25,7 @@ const modeLFormGetIdOne = async(id)=>{
 const modelFormGetUserEmail = async()=>{
     try {
         const result = await query(`SELECT DISTINCT(u.email), u.id, u.email,u.nama, u.alamat, u.no_hp  FROM form f
-                INNER JOIN USER u ON f.id_user = u.id`);
+                INNER JOIN user u ON f.id_user = u.id`);
         if(result.length === 0){
             return "Data Form tidak ditemukan"
         }
